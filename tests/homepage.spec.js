@@ -6,6 +6,7 @@ import { HomePage } from '../pages/homepage.js';
 test('should display the correct page title', async ({ page }) => {
   const globalElements = new Global(page);
   await globalElements.goToBaseUrl();
+  await expect(page).toHaveURL(globalElements.baseUrl)
   await expect(page).toHaveTitle('Ryley Johnson');
 });
 
@@ -13,6 +14,7 @@ test.describe('Navigation bar links', () => {
   test.beforeEach(async ({ page }) => {
     const globalElements = new Global(page);
     await globalElements.goToBaseUrl();
+    await expect(page).toHaveURL(globalElements.baseUrl)
   });
 
   // Test case for navigating to the home section
@@ -45,6 +47,7 @@ test.describe('Resume and Cover Letter Downloads', () => {
   test.beforeEach(async ({ page }) => {
     const globalElements = new Global(page);
     await globalElements.goToBaseUrl();
+    await expect(page).toHaveURL(globalElements.baseUrl)
   });
 
   test('download resume', async ({ page }) => {
@@ -74,6 +77,7 @@ test.describe('Social Media button functionality', async () => {
   test.beforeEach(async ({ page }) => {
     const globalElements = new Global(page)
     await globalElements.goToBaseUrl()
+    await expect(page).toHaveURL(globalElements.baseUrl)
 
   })
 
@@ -130,6 +134,7 @@ test('Each project box links to expected page', async ({ page }) => {
 
   // Navigate to the homepage
   await globalElements.goToBaseUrl();
+  await expect(page).toHaveURL(globalElements.baseUrl)
 
   const expectedUrls = [
     'https://testlio.com/job/freelance-uber-sf/',
@@ -164,6 +169,7 @@ test.describe('Image are visible', async () =>{
   test.beforeEach(async ({ page }) => {
     const globalElements = new Global(page)
     await globalElements.goToBaseUrl();
+    await expect(page).toHaveURL(globalElements.baseUrl)
   });
 
   test('First Profile Pic Visible', async ({page}) => {
@@ -192,6 +198,7 @@ test.describe('Hover Color Changes', () => {
     const hoverColor = 'rgb(0, 0, 0)';
 
     await globalElements.goToBaseUrl();
+    await expect(page).toHaveURL(globalElements.baseUrl)
   
   
     await expect(homePage.navBar.topHomeButton).toHaveCSS('color', defaultColor);
