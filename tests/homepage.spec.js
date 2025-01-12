@@ -181,6 +181,39 @@ test.describe('Image are visible', async () =>{
 
 });
 
+test.describe('Hover Color Changes', () => {
+
+  test('nav bar titles change color on hover', async ({ page }) => {
+    
+    const globalElements = new Global(page)
+    const homePage = new HomePage(page)
+
+    const defaultColor = 'rgb(255, 4, 4)';
+    const hoverColor = 'rgb(0, 0, 0)';
+
+    await globalElements.goToBaseUrl();
+  
+  
+    await expect(homePage.navBar.topHomeButton).toHaveCSS('color', defaultColor);
+    await expect(homePage.navBar.topAboutButton).toHaveCSS('color', defaultColor);
+    await expect(homePage.navBar.topProjectsButton).toHaveCSS('color', defaultColor);
+    await expect(homePage.navBar.topContactButton).toHaveCSS('color', defaultColor);
+  
+    await homePage.navBar.topHomeButton.hover();
+    await expect(homePage.navBar.topHomeButton).toHaveCSS('color', hoverColor);
+  
+    await homePage.navBar.topAboutButton.hover();
+    await expect(homePage.navBar.topAboutButton).toHaveCSS('color', hoverColor);
+  
+    await homePage.navBar.topProjectsButton.hover();
+    await expect(homePage.navBar.topProjectsButton).toHaveCSS('color', hoverColor);
+  
+    await homePage.navBar.topContactButton.hover();
+    await expect(homePage.navBar.topContactButton).toHaveCSS('color', hoverColor);
+  });
+  
+  
+  });
   
   
 
