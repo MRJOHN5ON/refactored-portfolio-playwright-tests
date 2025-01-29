@@ -157,7 +157,7 @@ test('Each project box links to expected page', async ({ page }) => {
     await projectBoxes.nth(i).click();
     await expect(page).toHaveURL(expectedUrls[i]);
 
-    // Go back to the homepage
+    
     if (i < Object.keys(expectedUrls).length - 1) {
       await page.goBack();
     }
