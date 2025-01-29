@@ -136,33 +136,34 @@ test('Each project box links to expected page', async ({ page }) => {
   await globalElements.goToBaseUrl();
   await expect(page).toHaveURL(globalElements.baseUrl)
 
-  const expectedUrls = [
-    'https://testlio.com/job/freelance-uber-sf/',
-    'https://mrjohn5on.github.io/socialqa.html',
-    'https://mrjohn5on.github.io/project1.html',
-    'https://mrjohn5on.github.io/project2.html',
-    'https://mrjohn5on.github.io/project3.html',
-    'https://mrjohn5on.github.io/supernova.html',
-    'https://mrjohn5on.github.io/project4.html',
-    'https://github.com/MRJOHN5ON/learning_playwright',
-    'https://mrjohn5on.github.io/urbanscooters.html',
-    'https://github.com/MRJOHN5ON/E2E-webdriverIO-',
-  ];
+  const expectedUrls = {
+    0: 'https://testlio.com/job/freelance-uber-sf/',
+    1: 'https://mrjohn5on.github.io/socialqa.html',
+    2: 'https://mrjohn5on.github.io/project1.html',
+    3: 'https://mrjohn5on.github.io/project2.html',
+    4: 'https://mrjohn5on.github.io/project3.html',
+    5: 'https://mrjohn5on.github.io/supernova.html',
+    6: 'https://mrjohn5on.github.io/project4.html',
+    7: 'https://github.com/MRJOHN5ON/learning_playwright',
+    8: 'https://mrjohn5on.github.io/urbanscooters.html',
+    9: 'https://github.com/MRJOHN5ON/E2E-webdriverIO-',
+  };
 
-  for (let i = 0; i < expectedUrls.length; i++) {
-    const projectBox = `project-box${i + 1}`; 
+  
+  const projectBoxes = await page.locator('.project-box');
 
-    
-    await page.getByTestId(projectBox).click();
-
-    
+  for (let key of Object.keys(expectedUrls)) {
+    const i = Number(key);
+    await projectBoxes.nth(i).click();
     await expect(page).toHaveURL(expectedUrls[i]);
 
-    
-    if (i < expectedUrls.length - 1) {
+    // Go back to the homepage
+    if (i < Object.keys(expectedUrls).length - 1) {
       await page.goBack();
     }
   }
+   
+
 });
 
 test.describe('Image are visible', async () =>{
