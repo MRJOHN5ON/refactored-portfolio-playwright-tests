@@ -1,6 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, } from '@playwright/test';
 import { Global } from '../pages/global.js';
 import { HomePage } from '../pages/homepage.js';
+
 
 
 test('should display the correct page title', async ({ page }) => {
@@ -20,24 +21,24 @@ test.describe('Navigation bar links', () => {
   // Test case for navigating to the home section
   test('navigate to home', async ({ page }) => {
     const homePage = new HomePage(page);
-    await homePage.navBar.clickTopHomeButton();
+    await homePage.clickTopHomeButton();
     await expect(page).toHaveURL('https://mrjohn5on.github.io/#home');
   });
 
   test('navigate to about', async ({ page }) => {
     const homePage = new HomePage(page);
-    await homePage.navBar.clickTopAboutButton();
+    await homePage.clickTopAboutButton();
     await expect(page).toHaveURL('https://mrjohn5on.github.io/#about');
   });
   test('navigate to projects', async ({ page }) => {
     const homePage = new HomePage(page);
-    await homePage.navBar.clickTopProjectsButton();
+    await homePage.clickTopProjectsButton();
     await expect(page).toHaveURL('https://mrjohn5on.github.io/#projects');
   });
 
   test('navigate to contact', async ({ page }) => {
     const homePage = new HomePage(page);
-    await homePage.navBar.clickTopContactButton();
+    await homePage.clickTopContactButton();
     await expect(page).toHaveURL('https://mrjohn5on.github.io/#contact');
   });
 
@@ -125,107 +126,97 @@ test.describe('Social Media button functionality', async () => {
     await newPage.close()
   });
 
-
-
 });
 
-test('Each project box links to expected page', async ({ page }) => {
-  const globalElements = new Global(page);
-
-  // Navigate to the homepage
-  await globalElements.goToBaseUrl();
-  await expect(page).toHaveURL(globalElements.baseUrl)
-
-  const expectedUrls = {
-    0: 'https://testlio.com/job/freelance-uber-sf/',
-    1: 'https://mrjohn5on.github.io/socialqa.html',
-    2: 'https://mrjohn5on.github.io/project1.html',
-    3: 'https://mrjohn5on.github.io/project2.html',
-    4: 'https://mrjohn5on.github.io/project3.html',
-    5: 'https://mrjohn5on.github.io/supernova.html',
-    6: 'https://mrjohn5on.github.io/project4.html',
-    7: 'https://github.com/MRJOHN5ON/learning_playwright',
-    8: 'https://mrjohn5on.github.io/urbanscooters.html',
-    9: 'https://github.com/MRJOHN5ON/E2E-webdriverIO-',
-  };
-
-  
-  const projectBoxes = await page.locator('.project-box');
-
-  for (let key of Object.keys(expectedUrls)) {
-    const i = Number(key);
-    await projectBoxes.nth(i).click();
-    await expect(page).toHaveURL(expectedUrls[i]);
-
-    
-    if (i < Object.keys(expectedUrls).length - 1) {
-      await page.goBack();
-    }
-  }
-   
-
-});
-
-test.describe('Image are visible', async () =>{
+test.describe('Image are visible', async () => {
   test.beforeEach(async ({ page }) => {
     const globalElements = new Global(page)
     await globalElements.goToBaseUrl();
     await expect(page).toHaveURL(globalElements.baseUrl)
   });
 
-  test('First Profile Pic Visible', async ({page}) => {
+  test('First Profile Pic Visible', async ({ page }) => {
     const homePage = new HomePage(page)
     await expect(homePage.profilePic1).toBeVisible()
 
   });
 
-  test('Second Profile Pic Visible', async ({page}) => {
+  test('Second Profile Pic Visible', async ({ page }) => {
     const homePage = new HomePage(page)
     await expect(homePage.profilePic2).toBeVisible()
-    
+
   });
- 
+
 
 });
 
 test.describe('Hover Color Changes', () => {
+  const menuItemLocators = [
+    { name: 'Home', testId: 'Nav-menu-home' },
+    { name: 'About', testId: 'Nav-menu-about' },
+    { name: 'Projects', testId: 'Nav-menu-projects' },
+    { name: 'Contact', testId: 'Nav-menu-contact' },
+  ];
 
-  test('nav bar titles change color on hover', async ({ page }) => {
-    
+  // Loop for default color tests
+  for (const { name, testId } of menuItemLocators) {
+    test(`Menu Item ${name} displays default color`, async ({ page }) => {
+      const globalElements = new Global(page);
+      await globalElements.goToBaseUrl();
+      await expect(page).toHaveURL(globalElements.baseUrl);
+
+      const locator = page.getByTestId(testId);
+      const defaultColor = 'rgb(255, 4, 4)';
+      await expect(locator).toHaveCSS('color', defaultColor);
+    });
+  }
+
+  // Loop for hover color tests
+  for (const { name, testId } of menuItemLocators) {
+    test(`Menu Item ${name} changes color on hover`, async ({ page }) => {
+      const globalElements = new Global(page);
+      await globalElements.goToBaseUrl();
+      await expect(page).toHaveURL(globalElements.baseUrl);
+
+      const locator = page.getByTestId(testId);
+      const hoverColor = 'rgb(0, 0, 0)';
+      await locator.hover();
+      await expect(locator).toHaveCSS('color', hoverColor);
+    });
+  }
+});
+
+
+test.describe('project box links go to expected page', () => {
+  test.beforeEach(async ({ page }) => {
     const globalElements = new Global(page)
-    const homePage = new HomePage(page)
-
-    const defaultColor = 'rgb(255, 4, 4)';
-    const hoverColor = 'rgb(0, 0, 0)';
-
     await globalElements.goToBaseUrl();
     await expect(page).toHaveURL(globalElements.baseUrl)
-  
-  
-    await expect(homePage.navBar.topHomeButton).toHaveCSS('color', defaultColor);
-    await expect(homePage.navBar.topAboutButton).toHaveCSS('color', defaultColor);
-    await expect(homePage.navBar.topProjectsButton).toHaveCSS('color', defaultColor);
-    await expect(homePage.navBar.topContactButton).toHaveCSS('color', defaultColor);
-  
-    await homePage.navBar.topHomeButton.hover();
-    await expect(homePage.navBar.topHomeButton).toHaveCSS('color', hoverColor);
-  
-    await homePage.navBar.topAboutButton.hover();
-    await expect(homePage.navBar.topAboutButton).toHaveCSS('color', hoverColor);
-  
-    await homePage.navBar.topProjectsButton.hover();
-    await expect(homePage.navBar.topProjectsButton).toHaveCSS('color', hoverColor);
-  
-    await homePage.navBar.topContactButton.hover();
-    await expect(homePage.navBar.topContactButton).toHaveCSS('color', hoverColor);
   });
-  
-  
-  });
-  
-  
+  const projectBoxes = [
+    { index: 0, expectedUrl: 'https://testlio.com/job/freelance-uber-sf/' },
+    { index: 1, expectedUrl: 'https://mrjohn5on.github.io/socialqa.html' },
+    { index: 2, expectedUrl: 'https://mrjohn5on.github.io/project1.html' },
+    { index: 3, expectedUrl: 'https://mrjohn5on.github.io/project2.html' },
+    { index: 4, expectedUrl: 'https://mrjohn5on.github.io/project3.html' },
+    { index: 5, expectedUrl: 'https://mrjohn5on.github.io/supernova.html' },
+    { index: 6, expectedUrl: 'https://mrjohn5on.github.io/project4.html' },
+    { index: 7, expectedUrl: 'https://github.com/MRJOHN5ON/learning_playwright' },
+    { index: 8, expectedUrl: 'https://mrjohn5on.github.io/urbanscooters.html' },
+    { index: 9, expectedUrl: 'https://github.com/MRJOHN5ON/E2E-webdriverIO-' },
+  ];
 
 
+  for (const { index, expectedUrl } of projectBoxes) {
+    test(`Project Box ${index + 1} links to ${expectedUrl}`, async ({ page }) => {
+      const projectBoxesLocator = page.locator('.project-box');
+      await projectBoxesLocator.nth(index).click();
+      await expect(page).toHaveURL(expectedUrl);
+    });
+  };
+
+
+});
 
 
 
