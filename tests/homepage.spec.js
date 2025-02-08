@@ -208,7 +208,7 @@ test.describe('project box links go to expected page', () => {
 
 
   for (const { index, expectedUrl } of projectBoxes) {
-    test(`Project Box ${index + 1} links to ${expectedUrl}`, async ({ page }) => {
+    test(`Project Box ${index} links to ${expectedUrl}`, async ({ page }) => {
       const projectBoxesLocator = page.locator('.project-box');
       await projectBoxesLocator.nth(index).click();
       await expect(page).toHaveURL(expectedUrl);
