@@ -158,15 +158,19 @@ test.describe('Hover Color Changes', () => {
     { name: 'Contact', testId: 'Nav-menu-contact' },
   ];
 
+  const getMenuOptionLocator = async (page, testId) => {
+    const globalElements = new Global(page);
+    await globalElements.goToBaseUrl();
+    await expect(page).toHaveURL(globalElements.baseUrl);
+    return page.getByTestId(testId);
+  }
+
   // Loop for default color tests
   for (const { name, testId } of menuItemLocators) {
     test(`Menu Item ${name} displays default color`, async ({ page }) => {
-      const globalElements = new Global(page);
-      await globalElements.goToBaseUrl();
-      await expect(page).toHaveURL(globalElements.baseUrl);
-
-      const locator = page.getByTestId(testId);
       const defaultColor = 'rgb(255, 4, 4)';
+      
+      const locator = await getMenuOptionLocator(page, testId);
       await expect(locator).toHaveCSS('color', defaultColor);
     });
   }
@@ -174,13 +178,11 @@ test.describe('Hover Color Changes', () => {
   // Loop for hover color tests
   for (const { name, testId } of menuItemLocators) {
     test(`Menu Item ${name} changes color on hover`, async ({ page }) => {
-      const globalElements = new Global(page);
-      await globalElements.goToBaseUrl();
-      await expect(page).toHaveURL(globalElements.baseUrl);
-
-      const locator = page.getByTestId(testId);
+      const locator = await getMenuOptionLocator(page, testId);
       const hoverColor = 'rgb(0, 0, 0)';
+
       await locator.hover();
+
       await expect(locator).toHaveCSS('color', hoverColor);
     });
   }
