@@ -57,6 +57,22 @@ test('req1Img link opens in new tab with an enlarged image', async ({ page, cont
     expect(imgSizeLarge.height).toBeGreaterThan(imgSizeSmall.height);
 });
 
+test('postman1Img link opens in new tab as an enlarged image', async ({ page, context }) => {
+    const postmanPage = new Postman(page);
+    await postmanPage.goToPostmanProject();
+    await expect(postmanPage.postman1Img).toBeVisible();
+    const imgSizeSmall = await postmanPage.postman1Img.boundingBox();
+    expect(imgSizeSmall).toBeTruthy();
+    postmanPage.clickPostman1Img();
+    const newTab = await context.waitForEvent('page');
+    await newTab.waitForLoadState();
+    await expect(newTab).toHaveURL('https://mrjohn5on.github.io/assets/images/p2.png');
+    const imgSizeLarge = await newTab.locator('img').boundingBox();
+    expect(imgSizeLarge).toBeTruthy();
+    expect(imgSizeLarge.width).toBeGreaterThan(imgSizeSmall.width);
+    expect(imgSizeLarge.height).toBeGreaterThan(imgSizeSmall.height);
+});
+
 test('jira1Img link opens in new tab as an enlarged image', async ({ page, context }) => {
     const postmanPage = new Postman(page);
     await postmanPage.goToPostmanProject();
@@ -74,7 +90,52 @@ test('jira1Img link opens in new tab as an enlarged image', async ({ page, conte
    
 });
 
+test('postman2Img link opens in new tab as an enlarged image', async ({ page, context }) => {
+    const postmanPage = new Postman(page);
+    await postmanPage.goToPostmanProject();
+    await expect(postmanPage.postman2Img).toBeVisible();
+    const imgSizeSmall = await postmanPage.postman2Img.boundingBox();
+    expect(imgSizeSmall).toBeTruthy();
+    postmanPage.clickPostman2Img();
+    const newTab = await context.waitForEvent('page');
+    await newTab.waitForLoadState();
+    await expect(newTab).toHaveURL('https://mrjohn5on.github.io/assets/images/p4.png');
+    const imgSizeLarge = await newTab.locator('img').boundingBox();
+    expect(imgSizeLarge).toBeTruthy();
+    expect(imgSizeLarge.width).toBeGreaterThan(imgSizeSmall.width);
+    expect(imgSizeLarge.height).toBeGreaterThan(imgSizeSmall.height);
 
+
+
+}); 
+test('jira2Img link opens in new tab as an enlarged image', async ({ page, context }) => {
+    const postmanPage = new Postman(page);
+    await postmanPage.goToPostmanProject();
+    await expect(postmanPage.jira2Img).toBeVisible();
+    const imgSizeSmall = await postmanPage.jira2Img.boundingBox();
+    expect(imgSizeSmall).toBeTruthy();
+    postmanPage.clickJira2Img();
+    const newTab = await context.waitForEvent('page');
+    await newTab.waitForLoadState();
+    await expect(newTab).toHaveURL('https://mrjohn5on.github.io/assets/images/p5.png');
+    const imgSizeLarge = await newTab.locator('img').boundingBox();
+    expect(imgSizeLarge).toBeTruthy();
+    expect(imgSizeLarge.width).toBeGreaterThan(imgSizeSmall.width);
+    expect(imgSizeLarge.height).toBeGreaterThan(imgSizeSmall.height);
+});
+test('req2pdf link triggers a PDF download', async ({ page }) => {
+    const postmanPage = new Postman(page);
+    await postmanPage.goToPostmanProject();
+    await expect(postmanPage.req2Pdf).toBeVisible();
+
+    const [download] = await Promise.all([
+        page.waitForEvent('download'), 
+        postmanPage.clickReq2Pdf(), 
+    ]);
+
+    
+    expect(download.url()).toBe('https://practicum-content.s3.us-west-1.amazonaws.com/qa-us/pdf/Requirements_Shipping_Price_Calculations.pdf');
+});
 
 });
 
