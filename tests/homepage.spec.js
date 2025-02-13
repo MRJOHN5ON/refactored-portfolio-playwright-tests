@@ -196,23 +196,24 @@ test.describe('project box links go to expected page', () => {
     await expect(page).toHaveURL(globalElements.baseUrl)
   });
   const projectBoxes = [
-    { index: 0, expectedUrl: 'https://testlio.com/job/freelance-uber-sf/' },
-    { index: 1, expectedUrl: 'https://mrjohn5on.github.io/socialqa.html' },
-    { index: 2, expectedUrl: 'https://mrjohn5on.github.io/project1.html' },
-    { index: 3, expectedUrl: 'https://mrjohn5on.github.io/project2.html' },
-    { index: 4, expectedUrl: 'https://mrjohn5on.github.io/project3.html' },
-    { index: 5, expectedUrl: 'https://mrjohn5on.github.io/supernova.html' },
-    { index: 6, expectedUrl: 'https://mrjohn5on.github.io/project4.html' },
-    { index: 7, expectedUrl: 'https://github.com/MRJOHN5ON/learning_playwright' },
-    { index: 8, expectedUrl: 'https://mrjohn5on.github.io/urbanscooters.html' },
-    { index: 9, expectedUrl: 'https://github.com/MRJOHN5ON/E2E-webdriverIO-' },
+    { dataTestId: 'project-box1', expectedUrl: 'https://testlio.com/job/freelance-uber-sf/' },
+    { dataTestId: 'project-box2', expectedUrl: 'https://mrjohn5on.github.io/socialqa.html' },
+    { dataTestId: 'project-box3', expectedUrl: 'https://mrjohn5on.github.io/project1.html' },
+    { dataTestId: 'project-box4', expectedUrl: 'https://mrjohn5on.github.io/project2.html' },
+    { dataTestId: 'project-box5', expectedUrl: 'https://mrjohn5on.github.io/project3.html' },
+    { dataTestId: 'project-box6', expectedUrl: 'https://mrjohn5on.github.io/supernova.html' },
+    { dataTestId: 'project-box7', expectedUrl: 'https://mrjohn5on.github.io/project4.html' },
+    { dataTestId: 'project-box8', expectedUrl: 'https://github.com/MRJOHN5ON/learning_playwright' },
+    { dataTestId: 'project-box9', expectedUrl: 'https://mrjohn5on.github.io/urbanscooters.html' },
+    { dataTestId: 'project-box10', expectedUrl: 'https://github.com/MRJOHN5ON/E2E-webdriverIO-' },
   ];
 
 
-  for (const { index, expectedUrl } of projectBoxes) {
-    test(`Project Box ${index} links to ${expectedUrl}`, async ({ page }) => {
-      const projectBoxesLocator = page.locator('.project-box');
-      await projectBoxesLocator.nth(index).click();
+  for (const { dataTestId, expectedUrl } of projectBoxes) {
+    test(`Project Box ${dataTestId} links to ${expectedUrl}`, async ({ page }) => {
+      const projectBox = page.getByTestId(dataTestId);
+      await projectBox.click();
+      await page.waitForLoadState('domcontentloaded');
       await expect(page).toHaveURL(expectedUrl);
     });
   };
