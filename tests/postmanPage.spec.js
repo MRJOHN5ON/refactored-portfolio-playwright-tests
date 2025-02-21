@@ -45,6 +45,16 @@ test.describe('Page structure', () => {
         }
     });
 
+    test('all p class image captions should be #a6ff00 color', async ({ page }) => {
+        const postmanPage = new Postman(page);
+        await postmanPage.goToPostmanProject();
+        const pClassImageCaptions = page.locator('p.image-caption');
+        const count = await pClassImageCaptions.count();
+        for (let i = 0; i < count; i++) {
+            await expect(pClassImageCaptions.nth(i)).toHaveCSS('color', 'rgb(166, 255, 0)');
+        }
+    });
+
 });
 
 test.describe('Link Tests', () => {
@@ -101,6 +111,17 @@ test.describe('Link Tests', () => {
 
         expect(imgSizeLarge.width).toBeGreaterThan(imgSizeSmall.width);
         expect(imgSizeLarge.height).toBeGreaterThan(imgSizeSmall.height);
+    });
+
+    test('node-tests link opens in new tab', async ({ page, context }) => {
+        const postmanPage = new Postman(page);
+        await postmanPage.goToPostmanProject();
+        const [nodeTests] = await Promise.all([
+            context.waitForEvent('page'),
+            postmanPage.clickNodeTestsLink()
+        ]);
+        await nodeTests.waitForLoadState();
+        await expect(nodeTests).toHaveURL('https://github.com/MRJOHN5ON/postmanAPI_testing/tree/main/node-tests');
     });
 
     test('postman1Img link opens in new tab as an enlarged image', async ({ page, context }) => {
@@ -178,6 +199,37 @@ test.describe('Link Tests', () => {
 
 
         expect(download.url()).toBe('https://practicum-content.s3.us-west-1.amazonaws.com/qa-us/pdf/Requirements_Shipping_Price_Calculations.pdf');
+    });
+    test('results img link opens in new tab as an enlarged image', async ({ page, context }) => {
+        const postmanPage = new Postman(page);
+        await postmanPage.goToPostmanProject();
+        await expect(postmanPage.resultsTable).toBeVisible();
+        const imgSizeSmall = await postmanPage.resultsTable.boundingBox();
+        expect(imgSizeSmall).toBeTruthy();
+        postmanPage.clickResultsTable();
+        const newTab = await context.waitForEvent('page');
+        await newTab.waitForLoadState();
+        await expect(newTab).toHaveURL('https://mrjohn5on.github.io/assets/images/p6.png');
+        const imgSizeLarge = await newTab.locator('img').boundingBox();
+        expect(imgSizeLarge).toBeTruthy();
+        expect(imgSizeLarge.width).toBeGreaterThan(imgSizeSmall.width);
+        expect(imgSizeLarge.height).toBeGreaterThan(imgSizeSmall.height);
+    });
+
+    test('Footer home button navigates to the home page', async ({ page }) => {
+        const postmanPage = new Postman(page);
+        await postmanPage.goToPostmanProject();
+        await expect(postmanPage.footerHomeButton).toBeVisible();
+        await postmanPage.clickFooterHomeButton();
+        await expect(page).toHaveURL('https://mrjohn5on.github.io/index.html');
+    });
+
+    test('Footer project bank button navigates to the project bank page', async ({ page }) => {
+        const postmanPage = new Postman(page);
+        await postmanPage.goToPostmanProject();
+        await expect(postmanPage.footerProjectBankButton).toBeVisible();
+        await postmanPage.clickFooterProjectBankButton();
+        await expect(page).toHaveURL('https://mrjohn5on.github.io/#projects');
     });
 
 });
