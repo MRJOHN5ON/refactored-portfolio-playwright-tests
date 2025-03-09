@@ -39,7 +39,7 @@ import { SocialQaProjectPage } from '../pages/socialQaProjectPage.js';
     await socialQaProjectPage.githubLink.hover();
     const afterColor = await socialQaProjectPage.githubLink.evaluate(el => getComputedStyle(el, "::before").color);
     
-    await expect(beforeColor).not.toBe(afterColor);
+    expect(beforeColor).not.toBe(afterColor);
   });
 
   test('all h2 headings should be the correct color (#ff007f)', async ({ page }) => {

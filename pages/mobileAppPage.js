@@ -19,4 +19,8 @@ exports.mobileAppPage = class mobileAppPage {
 
     }
 
+    async gotoMobileAppPage() {
+        await this.page.goto('https://mrjohn5on.github.io/project2.html')
+    }
+
 }
