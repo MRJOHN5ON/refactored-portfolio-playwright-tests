@@ -10,12 +10,19 @@ test.describe('Page structure', () => {
         await expect(page).toHaveTitle('API Testing with Postman');
     });
 
-    test('all h2 should be #ff0404 color', async ({ page }) => {
+    test('all h2 and h4 headers should be rgb(255, 64, 129) color', async ({ page }) => {
+        // Check h2 headers
         const h2Headers = page.locator('h2');
         const countH2 = await h2Headers.count();
-
         for (let i = 0; i < countH2; i++) {
-            await expect(h2Headers.nth(i)).toHaveCSS('color', 'rgb(255, 4, 4)');
+            await expect(h2Headers.nth(i)).toHaveCSS('color', 'rgb(255, 64, 129)');
+        }
+        
+        // Check h4 headers
+        const h4Headers = page.locator('h4');
+        const countH4 = await h4Headers.count();
+        for (let i = 0; i < countH4; i++) {
+            await expect(h4Headers.nth(i)).toHaveCSS('color', 'rgb(255, 64, 129)');
         }
     });
 
@@ -25,15 +32,6 @@ test.describe('Page structure', () => {
 
         for (let i = 0; i < count; i++) {
             await expect(h3Headers.nth(i)).toHaveCSS('color', 'rgb(166, 255, 0)');
-        }
-    });
-
-    test('all h4 headers should be #ff0404 color', async ({ page }) => {
-        const h4Headers = page.locator('h4');
-        const count = await h4Headers.count();
-
-        for (let i = 0; i < count; i++) {
-            await expect(h4Headers.nth(i)).toHaveCSS('color', 'rgb(255, 4, 4)');
         }
     });
 
@@ -136,8 +134,6 @@ test.describe('Link Tests', () => {
         await jira1Img.click();
         const newTab = await context.waitForEvent('page');
 
-
-
         await newTab.waitForLoadState();
         await expect(newTab).toHaveURL('https://mrjohn5on.github.io/assets/images/p3.png');
 
@@ -157,8 +153,6 @@ test.describe('Link Tests', () => {
 
         await postman2Img.click();
         const newTab = await context.waitForEvent('page');
-
-
 
         await newTab.waitForLoadState();
         await expect(newTab).toHaveURL('https://mrjohn5on.github.io/assets/images/p4.png');
@@ -180,8 +174,6 @@ test.describe('Link Tests', () => {
         await jira2Img.click();
         const newTab = await context.waitForEvent('page');
 
-
-
         await newTab.waitForLoadState();
         await expect(newTab).toHaveURL('https://mrjohn5on.github.io/assets/images/p5.png');
 
@@ -199,8 +191,6 @@ test.describe('Link Tests', () => {
         await req2Pdf.click();
         const download = await page.waitForEvent('download');
 
-
-
         expect(download.url()).toBe('https://practicum-content.s3.us-west-1.amazonaws.com/qa-us/pdf/Requirements_Shipping_Price_Calculations.pdf');
     });
 
@@ -213,8 +203,6 @@ test.describe('Link Tests', () => {
 
         await resultsTable.click();
         const newTab = await context.waitForEvent('page');
-
-
 
         await newTab.waitForLoadState();
         await expect(newTab).toHaveURL('https://mrjohn5on.github.io/assets/images/p6.png');

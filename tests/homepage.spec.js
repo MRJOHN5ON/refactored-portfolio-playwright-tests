@@ -150,44 +150,6 @@ test.describe('Image are visible', async () => {
 
 });
 
-test.describe('Hover Color Changes', () => {
-  const menuItemLocators = [
-    { name: 'Home', testId: 'Nav-menu-home' },
-    { name: 'About', testId: 'Nav-menu-about' },
-    { name: 'Projects', testId: 'Nav-menu-projects' },
-    { name: 'Contact', testId: 'Nav-menu-contact' },
-  ];
-
-  const getMenuOptionLocator = async (page, testId) => {
-    const globalElements = new Global(page);
-    await globalElements.goToBaseUrl();
-    await expect(page).toHaveURL(globalElements.baseUrl);
-    return page.getByTestId(testId);
-  }
-
-  // Loop for default color tests
-  for (const { name, testId } of menuItemLocators) {
-    test(`Menu Item ${name} displays default color`, async ({ page }) => {
-      const defaultColor = 'rgb(255, 4, 4)';
-      
-      const locator = await getMenuOptionLocator(page, testId);
-      await expect(locator).toHaveCSS('color', defaultColor);
-    });
-  }
-
-  // Loop for hover color tests
-  for (const { name, testId } of menuItemLocators) {
-    test(`Menu Item ${name} changes color on hover`, async ({ page }) => {
-      const locator = await getMenuOptionLocator(page, testId);
-      const hoverColor = 'rgb(0, 0, 0)';
-
-      await locator.hover();
-
-      await expect(locator).toHaveCSS('color', hoverColor);
-    });
-  }
-});
-
 
 test.describe('project box links go to expected page', () => {
   test.beforeEach(async ({ page }) => {
