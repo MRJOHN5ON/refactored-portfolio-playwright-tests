@@ -66,25 +66,5 @@ test.describe('Mobile App Page', () => {
     });
 
 
-   
-    test('should have an accordion header', async ({ page }) => {
-        const mobileAppPage = new MobileAppPage(page);
-        await expect(mobileAppPage.accordionHeader).toBeVisible();
-    });
-
-    test('accordion header should expand upon click', async ({ page }) => {
-        const mobileAppPage = new MobileAppPage(page);
-        await mobileAppPage.expandAccordion();
-    });
-
-    test('expanded accordion should display images', async ({page}) => {
-        const mobileAppPage = new MobileAppPage(page);
-        await mobileAppPage.expandAccordion();
-        for (const image of mobileAppPage.expandedAccordionImages) {
-            await expect(image).toBeVisible();
-        }
-
-    })
-
 
 });

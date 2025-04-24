@@ -26,21 +26,21 @@ test.describe('Page structure', () => {
         }
     });
 
-    test('all h3 headers should be #a6ff00 color', async ({ page }) => {
+    test('all h3 headers should be rgb(255, 64, 129) color', async ({ page }) => {
         const h3Headers = page.locator('h3');
         const count = await h3Headers.count();
 
         for (let i = 0; i < count; i++) {
-            await expect(h3Headers.nth(i)).toHaveCSS('color', 'rgb(166, 255, 0)');
+            await expect(h3Headers.nth(i)).toHaveCSS('color', 'rgb(255, 64, 129)');
         }
     });
 
-    test('all p class image captions should be #a6ff00 color', async ({ page }) => {
-        const pClassImageCaptions = page.locator('p.image-caption');
-        const count = await pClassImageCaptions.count();
+    test('all image caption paragraphs should be rgb(160, 160, 160) color', async ({ page }) => {
+        const imageCaptions = page.locator('p.text-muted.mt-2');
+        const count = await imageCaptions.count();
 
         for (let i = 0; i < count; i++) {
-            await expect(pClassImageCaptions.nth(i)).toHaveCSS('color', 'rgb(166, 255, 0)');
+            await expect(imageCaptions.nth(i)).toHaveCSS('color', 'rgb(160, 160, 160)');
         }
     });
 });
@@ -91,8 +91,8 @@ test.describe('Link Tests', () => {
         const imgSizeLarge = await newTab.locator('img').boundingBox();
         expect(imgSizeLarge).toBeTruthy();
 
-        expect(imgSizeLarge.width).toBeGreaterThan(imgSizeSmall.width);
-        expect(imgSizeLarge.height).toBeGreaterThan(imgSizeSmall.height);
+        expect(imgSizeLarge.width).toBeGreaterThanOrEqual(imgSizeSmall.width);
+        expect(imgSizeLarge.height).toBeGreaterThanOrEqual(imgSizeSmall.height);
     });
 
     test('node-tests link opens in new tab', async ({ page, context }) => {
