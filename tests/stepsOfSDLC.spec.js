@@ -76,7 +76,7 @@ test.describe('Steps of SDLC Project Page Tests', () => {
       await expect(page).toHaveURL(/.*index\.html$/);
     });
 
-    test('project bank link should navigate to projects section', async ({ page }) => {
+    test('project link should navigate to projects section', async ({ page }) => {
       const sdlcPage = new StepsOfSDLC(page);
       await sdlcPage.navigate();
       
@@ -86,6 +86,69 @@ test.describe('Steps of SDLC Project Page Tests', () => {
       await sdlcPage.clickProjectBankLink();
       await expect(page).toHaveURL('https://mrjohn5on.github.io/#projects');
     });
+
+    test('about link should navigate to about section of home page', async ({ page }) => {
+      const sdlcPage = new StepsOfSDLC(page);
+      await sdlcPage.navigate();
+
+      await expect(sdlcPage.aboutLink).toBeVisible();
+      await expect(sdlcPage.aboutLink).toHaveAttribute('href', 'https://mrjohn5on.github.io/#about')
+
+      await (sdlcPage.aboutLink).click()
+      await expect(page).toHaveURL('https://mrjohn5on.github.io/#about');
+    });
+
+    test('contact link should navigate to contact section of home page', async ({ page }) => {
+      const sdlcPage = new StepsOfSDLC(page);
+      await sdlcPage.navigate();
+
+      await expect(sdlcPage.contactLink).toBeVisible();
+      await expect(sdlcPage.contactLink).toHaveAttribute('href', 'https://mrjohn5on.github.io/#contact')
+
+      await (sdlcPage.contactLink).click()
+      await expect(page).toHaveURL('https://mrjohn5on.github.io/#contact');
+    });
+
+    test('linkedin link should open linkedin in a new tab', async ({ page }) => {
+      const sdlcPage = new StepsOfSDLC(page);
+      await sdlcPage.navigate();
+
+      await expect(sdlcPage.linkedInLink).toBeVisible();
+
+      const [newPage] = await Promise.all([
+        page.context().waitForEvent('page'),
+        sdlcPage.linkedInLink.click({ force: true }),
+      ]);
+      await expect(newPage).toHaveURL(/linkedin/);
+    });
+
+    test('github link should open github in a new tab', async ({ page }) => {
+      const sdlcPage = new StepsOfSDLC(page);
+      await sdlcPage.navigate();
+
+      await expect(sdlcPage.githubLink).toBeVisible();
+
+      const [newPage] = await Promise.all([
+        page.context().waitForEvent('page'),
+        sdlcPage.githubLink.click({ force: true }),
+      ]);
+      await expect(newPage).toHaveURL(/github/);
+    });
+
+    test('Life-of-Logos link should open in a new tab', async ({ page }) => {
+      const sdlcPage = new StepsOfSDLC(page);
+      await sdlcPage.navigate();
+
+      await expect(sdlcPage.lifeOfLogosLink).toBeVisible();
+
+      const [newPage] = await Promise.all([
+        page.context().waitForEvent('page'),
+        sdlcPage.lifeOfLogosLink.click({ force: true }),
+      ]);
+      await expect(newPage).toHaveURL(/Life-of-Logos/);
+    });
+
+
   });
 
   test('all section headers should have consistent styling', async ({ page }) => {
@@ -132,11 +195,5 @@ test.describe('Steps of SDLC Project Page Tests', () => {
     await expect(sdlcPage.pageTitle).toBeVisible();
   });
   
-  test('visitor counter link should be visible', async ({ page, context }) => {
-    const sdlcPage = new StepsOfSDLC(page);
-    await sdlcPage.navigate();
-    
-    await expect(sdlcPage.visitorCounterLink).toBeVisible();
-    await expect(sdlcPage.visitorCounterLink).toHaveAttribute('href', 'http://www.freevisitorcounters.com');
-  });
+ 
 });

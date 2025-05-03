@@ -24,11 +24,21 @@ exports.StepsOfSDLC = class StepsOfSDLC {
     
     // Footer elements 
     this.copyrightText = this.page.getByText('© 2024 Ryley Johnson', { exact: true });
-    this.homePageLink = this.page.getByRole('link', { name: 'Home Page' });
-    this.projectBankLink = this.page.getByRole('link', { name: 'Project Bank' });
-    this.contactEmailLabel = this.page.getByText('Contact me:');
+    this.homePageLink = this.page.getByRole('link', { name: 'Home' });
+    this.projectBankLink = this.page.getByRole('link', { name: 'Projects' });
+    this.contactEmailLabel = this.page.getByText('Contact:');
     this.contactEmail = this.page.getByRole('link', { name: 'ryleyjohnsonemail@gmail.com' });
-    this.visitorCounterLink = this.page.getByRole('link', { name: 'Freevisitorcounters.com' });
+    this.contactLink = this.page.getByRole('link', { name: 'Contact' })
+    this.aboutLink = this.page.getByRole('link', { name: 'About' });
+    this.linkedInLink = this.page.getByRole('link', { name: 'LinkedIn' })
+    this.githubLink = this.page.getByRole('link', { name: 'Github' })
+    this.lifeOfLogosLink = this.page.getByRole('link', { name: 'Life of Logos' })
+
+
+    //deprecated
+
+    // this.visitorCounterLink = this.page.getByRole('link', { name: 'Freevisitorcounters.com' });
+    
   }
 
   // Navigation methods
